@@ -1,31 +1,22 @@
-// step-1: add event listeners to the deposit button
+// Deposit button click
 document.getElementById("btn-deposit").addEventListener("click", function () {
-  //   step-2: get the deposit amount from the deposit button;
-  const depositField = document.getElementById("deposit-field");
-  const newDepositAmountString = depositField.value;
-  newDepositAmount = parseFloat(newDepositAmountString);
-  //   step-3: get the current deposit total amount
-  //   for non-input (element other than input, textarea) use the innerText to get the text.
-  const depositTotalElement = document.getElementById("deposit-total");
-  const previousDepositTotalString = depositTotalElement.innerText;
-  const previousDepositTotal = parseFloat(previousDepositTotalString);
+  const newDepositAmount = getInputFieldValueById("deposit-field");
+  if (newDepositAmount < 0) {
+    alert("Deposit must not be negative number");
+    return;
+  }
+  if (isNaN(newDepositAmount)) {
+    alert("Please enter a valid number");
+    return;
+  }
 
-  // step-4: add numbers to set the total deposit
-  const currentDepositTotal = newDepositAmount + previousDepositTotal;
+  const previousDepositAmount = getTextElementValueById("deposit-total");
+  const newDepositTotal = previousDepositAmount + newDepositAmount;
 
-  // set the total deposit
-  depositTotalElement.innerText = currentDepositTotal;
+  setCalculatedAmountToId("deposit-total", newDepositTotal);
 
-  // step-5: get balance current total
-  const balanceTotalElement = document.getElementById("balance-total");
-  const previousBalanceTotalString = balanceTotalElement.innerText;
-  const previousBalanceTotal = parseFloat(previousBalanceTotalString);
-
-  // step-6: calculate current total balance
-  const currentBalanceTotal = previousBalanceTotal + newDepositAmount;
-  // set the balance total
-  balanceTotalElement.innerText = currentBalanceTotal;
-
-  //   seep-7: clear the deposit field
-  depositField.value = "";
+  // adding deposit amount to total balance
+  const previousTotalBalance = getTextElementValueById("balance-total");
+  const newTotalBalance = previousTotalBalance + newDepositAmount;
+  setCalculatedAmountToId("balance-total", newTotalBalance);
 });

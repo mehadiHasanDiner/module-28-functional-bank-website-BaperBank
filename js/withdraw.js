@@ -1,53 +1,30 @@
-/*
-1. add event handler with the withdrawn button
-2. get the withdrawn amount from the withdraw input field
-2.5 also make sure to covert the input into numbers by using parseFloat
-3. Get previous withdraw total
-4. calculate total withdraw amount
-4-5 set the total withdraw amount
-5. get the previous balance total 
-6. calculate new balance total 
-6.5 set the new balance total
-
-7.clear the withdraw input field
-
-*/
-
-// step 1: add event handler
+// Withdraw button click
 document.getElementById("btn-withdraw").addEventListener("click", function () {
-  //   step=2:
-  const withdrawField = document.getElementById("withdraw-field");
-  const newWithdrawAmountString = withdrawField.value;
-  const newWithdrawAmount = parseFloat(newWithdrawAmountString);
+  const newWithdrawAmount = getInputFieldValueById("withdraw-field");
 
-  //   step-7:
-  withdrawField.value = "";
-
+  if (newWithdrawAmount < 0) {
+    alert("Withdraw amount must not be negative number");
+    return;
+  }
   if (isNaN(newWithdrawAmount)) {
-    alert("Please provide a valid amount");
-    return;
-  }
-  //   step-3:
-  const withdrawTotalElement = document.getElementById("withdraw-total");
-  const previousWithdrawTotalString = withdrawTotalElement.innerText;
-  const previousWithdrawTotal = parseFloat(previousWithdrawTotalString);
-
-  //   step-5:
-  const balanceTotalElement = document.getElementById("balance-total");
-  const newBalanceTotalString = balanceTotalElement.innerText;
-  const previousBalanceTotal = parseFloat(newBalanceTotalString);
-  //   console.log(previousBalanceTotal);
-
-  if (newWithdrawAmount > previousBalanceTotal) {
-    alert("Baper banke e eto taka nai");
+    alert("Please enter a valid number");
     return;
   }
 
-  //   step-4:
-  const currentWithdrawTotal = previousWithdrawTotal + newWithdrawAmount;
-  withdrawTotalElement.innerText = currentWithdrawTotal;
+  const previousWithdrawAmount = getTextElementValueById("withdraw-total");
+  const newWithdrawTotal = newWithdrawAmount + previousWithdrawAmount;
 
-  //   step-6:
-  const newBalanceTotal = previousBalanceTotal - newWithdrawAmount;
-  balanceTotalElement.innerText = newBalanceTotal;
+  const previousWithdrawTotal = getTextElementValueById("balance-total");
+
+  if (newWithdrawAmount > previousWithdrawTotal) {
+    alert("Bapper Bank e eto taka nai");
+    return;
+  }
+
+  setCalculatedAmountToId("withdraw-total", newWithdrawTotal);
+
+  // deducting withdraw amount from total balance
+
+  const newBalanceTotal = previousWithdrawTotal - newWithdrawAmount;
+  setCalculatedAmountToId("balance-total", newBalanceTotal);
 });
